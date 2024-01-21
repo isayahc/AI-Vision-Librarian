@@ -130,19 +130,22 @@ def change_extension_to_txt(image_path) -> str:
     return txt_file_path
 
 
-
-if __name__ == '__main__':
-    dataset = load_dataset("jovianzm/Pexels-400k")
-    output_dir = "data"
+def generate_images_with_tags(
+        output_dir="data",
+        dataset="jovianzm/Pexels-400k",
+        query_prompt=query_image_prompt
+        ) ->None:
+    """given a dataset and a output directory generate 
+    
+    """
     
     dataset_image_urls = dataset['train']['thumbnail']
     random_entries = get_random_entries(dataset_image_urls, 5)
-
     for i in random_entries:
         image:bytes = get_image_from_url(i)
         generated_tags = bytes_query_image(
             image,
-            query_image_prompt
+            query_prompt,
             )
         
         # some preprocessing of the results
@@ -162,7 +165,39 @@ if __name__ == '__main__':
             output_path=text_file_save_location,
         )        
 
-        x=0
 
+if __name__ == '__main__':
+    # dataset = load_dataset("jovianzm/Pexels-400k")
+    # output_dir = "data"
+    
+    # dataset_image_urls = dataset['train']['thumbnail']
+    # random_entries = get_random_entries(dataset_image_urls, 5)
 
-x=0
+    # for i in random_entries:
+    #     image:bytes = get_image_from_url(i)
+    #     generated_tags = bytes_query_image(
+    #         image,
+    #         query_image_prompt
+    #         )
+        
+    #     # some preprocessing of the results
+    #     generated_tags = generated_tags.split(",")
+    #     generated_tags = [item.strip() for item in generated_tags]
+
+        
+    #     image_base_name = os.path.basename(i)
+
+    #     tags_save_location = change_extension_to_txt(image_base_name)
+
+    #     text_file_save_location = os.path.join(output_dir,tags_save_location)
+
+    #     create_txt_file(
+    #         image_link=i,
+    #         strings=generated_tags,
+    #         output_path=text_file_save_location,
+    #     )        
+
+    #     x=0
+    pass
+
+    x=0
