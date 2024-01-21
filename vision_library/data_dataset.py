@@ -165,33 +165,4 @@ if __name__ == '__main__':
         x=0
 
 
-
-    # random_sample = sample(random_entries,1)[0]
-
-    # response = requests.get(random_sample)
-
-
-
-    # if response.status_code == 200:
-    #     # Open the image using PIL
-    #     image = BytesIO(response.content)
-    
-    # image:bytes = response.content
-
-    # x = bytes_query_image(
-    #     image,
-    #     "given the image provided you must generate a list of\
-    #     tags in such that if a user was searching for this image\
-    #     also allow for potential tags that could be unique to the iamge\
-    #     they would be able to find it\
-    #     Provide tags such as colors, entites in image, photostyle, estimated image era,\
-    #     Only provide the tags. Do not say antything else as i will be adding this to a pipeline and i do not want to parse it"
-    #     )
-    
-
-    # show_images_from_urls_matplotlib(random_entries)
-    # show_images_from_urls_tempdir(random_entries)
-
-
-
 x=0
