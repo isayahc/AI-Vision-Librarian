@@ -71,7 +71,7 @@ def search_vectorized_data(query):
 
 # Streamlit App
 def main():
-    st.title("Vision Library Use Interface")
+    st.title("Vision Library User Interface")
 
     # User options
     option = st.radio("Choose an option:", ["Provide Images", "Use Knowledge Base"])
@@ -107,7 +107,7 @@ def main():
 
     elif option == "Use Knowledge Base":
         st.subheader("Option 2: Use the Knowledge Base")
-        st.write("for context i am using the Pexels-400k location at")
+        st.write("for context i am using the Pexels-400k dataset location at")
         st.write("https://huggingface.co/datasets/jovianzm/Pexels-400k")
         # User input for query
         query = st.text_input("Enter your query for the Vector Database:")
