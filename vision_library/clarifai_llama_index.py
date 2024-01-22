@@ -54,6 +54,7 @@ chat_text_qa_msgs = [
             "There is a directory full of .txt files of  the format of the image url in\
             first line and the list of tags in the rest of the lines\
             are tags that describe the image. The user will ask for images and you must provide them the url of the images you have picked\
+            please avoid listing the on disk location. Only list the webpages\
             as well as well as why you picked those images"
         ),
     ),
