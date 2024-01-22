@@ -16,13 +16,13 @@ from io import BytesIO
 import tempfile
 import os
 # Load the "jovianzm/Pexels-400k" dataset
-from local_gemini import query_image, bytes_query_image
+from vision_library.local_gemini import query_image, bytes_query_image
 
 import requests
 from PIL import Image
 from io import BytesIO
 
-from prompt import query_image_prompt
+from vision_library.prompt import query_image_prompt
 
 def show_images_from_urls_tempdir(image_urls: List[str]) -> None:
     """
@@ -131,39 +131,51 @@ def change_extension_to_txt(image_path) -> str:
 
 
 def generate_images_with_tags(
+        num_of_images:int,
         output_dir="data",
         dataset="jovianzm/Pexels-400k",
-        query_prompt=query_image_prompt
+        query_prompt=query_image_prompt,
         ) ->None:
     """given a dataset and a output directory generate 
-    
+    parameters
+    num_of_images (int): number of random samples selected
+    output_dir (str): directory to write results to
+    dataset (str): the huggingface dataset chosen
+    query_prompt (str): the prompt used for a desired behavior
     """
+    dataset = load_dataset("jovianzm/Pexels-400k")
     
     dataset_image_urls = dataset['train']['thumbnail']
-    random_entries = get_random_entries(dataset_image_urls, 5)
+    random_entries = get_random_entries(dataset_image_urls, num_of_images)
     for i in random_entries:
-        image:bytes = get_image_from_url(i)
-        generated_tags = bytes_query_image(
-            image,
-            query_prompt,
-            )
-        
-        # some preprocessing of the results
-        generated_tags = generated_tags.split(",")
-        generated_tags = [item.strip() for item in generated_tags]
 
-        
         image_base_name = os.path.basename(i)
+        if not image_base_name in os.listdir(output_dir):
+        
 
-        tags_save_location = change_extension_to_txt(image_base_name)
+            image:bytes = get_image_from_url(i)
+            generated_tags = bytes_query_image(
+                image,
+                query_prompt,
+                )
+            
+            # some preprocessing of the results
+            generated_tags = generated_tags.split(",")
+            generated_tags = [item.strip() for item in generated_tags]
 
-        text_file_save_location = os.path.join(output_dir,tags_save_location)
+            
 
-        create_txt_file(
-            image_link=i,
-            strings=generated_tags,
-            output_path=text_file_save_location,
-        )        
+            tags_save_location = change_extension_to_txt(image_base_name)
+
+            text_file_save_location = os.path.join(output_dir,tags_save_location)
+
+            create_txt_file(
+                image_link=i,
+                strings=generated_tags,
+                output_path=text_file_save_location,
+            )        
+        else:
+            continue
 
 
 if __name__ == '__main__':
