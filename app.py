@@ -28,18 +28,46 @@ Then return the results
 """
 
 # vision_interface.py
-
+import os
 import streamlit as st
+from vision_library.local_gemini import bytes_query_image
+from vision_library.prompt import query_image_prompt
+from vision_library.clarifai_llama_index import query_engine
 
 # Function to generate annotated images from user-provided data
 def generate_annotated_images(image_list):
     # Add your implementation to generate annotated images
-    pass
+    images_list_as_bytes = [i.getvalue() for i in image_list]
+
+    i = images_list_as_bytes[0]
+
+    # st.write(i)
+
+    # for i in images_list_as_bytes:
+    #     AI_gnerated_tags = bytes_query_image(i,query_image_prompt)
+    AI_gnerated_tags = bytes_query_image(i,query_image_prompt)
+    st.write(AI_gnerated_tags)
+    
+# def save_uploaded_images(image_list):
+#     # Create 'data' directory if it doesn't exist
+#     data_directory = 'data'
+#     os.makedirs(data_directory, exist_ok=True)
+
+#     # Save uploaded images to the 'data' directory
+#     for i, image_file in enumerate(image_list):
+#         image_path = os.path.join(data_directory, f"uploaded_image_{i}.png")
+#         image_file.save(image_path)
+    
+#     st.success(f"{len(image_list)} images saved successfully in the 'data' directory!")
+
 
 # Function to search and return results from the vectorized data
 def search_vectorized_data(query):
     # Add your implementation to search vectorized data
-    return "Hi"
+    return query_engine.query(query)
+    # return "Hi"
+
+
 
 # Streamlit App
 def main():
@@ -51,28 +79,36 @@ def main():
     if option == "Provide Images":
         st.subheader("Option 1: Provide a list of images")
 
+        st.write("currently unavialable")
+
         # User input for image list
-        uploaded_files = st.file_uploader("Upload up to 10 images", type=["jpg", "jpeg", "png"], accept_multiple_files=True, key="images")
+        # uploaded_files = st.file_uploader("Upload up to 10 images", type=["jpg", "jpeg", "png"], accept_multiple_files=True, key="images")
+
         
 
-        if uploaded_files and len(uploaded_files) <= 10:
-            generate_annotated_images(uploaded_files)
+        # if uploaded_files and len(uploaded_files) <= 10:
+        #     st.write(uploaded_files)
+        #     # st.write(os.getcwd())
+        #     # save_uploaded_images(uploaded_files)
+            
+        #     # generate_annotated_images(uploaded_files)
 
-            # User input for query
-            query = st.text_input("Enter your query for the Vector Database:")
+        #     # User input for query
+        #     query = st.text_input("Enter your query for the Vector Database:")
 
-            # Submit button
-            if st.button("Submit"):
-                # Search and return results
-                results = search_vectorized_data(query)
+        #     # Submit button
+        #     if st.button("Submit"):
+        #         # Search and return results
+        #         results = search_vectorized_data(query)
     
-                # Display results
-                st.write("Search Results:")
-                st.write(results)
+        #         # Display results
+        #         st.write("Search Results:")
+        #         st.write(results)
 
     elif option == "Use Knowledge Base":
         st.subheader("Option 2: Use the Knowledge Base")
-
+        st.write("for context i am using the Pexels-400k location at")
+        st.write("https://huggingface.co/datasets/jovianzm/Pexels-400k")
         # User input for query
         query = st.text_input("Enter your query for the Vector Database:")
 
@@ -83,7 +119,7 @@ def main():
 
             # Display results
             st.write("Search Results:")
-            st.write(results)
+            st.markdown(results)
 
 if __name__ == "__main__":
     main()

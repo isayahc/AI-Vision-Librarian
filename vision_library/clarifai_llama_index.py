@@ -8,31 +8,39 @@ from llama_index.llms import Clarifai
 from llama_index.llms import OpenAI
 import os
 import dotenv
+from llama_index import StorageContext, load_index_from_storage
 
 CLARIFAI_PAT = os.getenv("CLARIFAI_PAT")
+os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
 
 
-embed_model = ClarifaiEmbedding(
-    model_name="BAAI-bge-base-en", 
-    user_id="clarifai", 
-    app_id="main",
-    pat=CLARIFAI_PAT,
-)
+# embed_model = ClarifaiEmbedding(
+#     model_name="BAAI-bge-base-en", 
+#     user_id="clarifai", 
+#     app_id="main",
+#     pat=CLARIFAI_PAT,
+# )
 
 llm = OpenAI()
 
+
+# rebuild storage context
+storage_context = StorageContext.from_defaults(persist_dir="./storage")
+# load index
+index = load_index_from_storage(storage_context)
+
 # Create a ServiceContext
-service_context = ServiceContext.from_defaults(
-    llm=llm, embed_model=embed_model
-)
+# service_context = ServiceContext.from_defaults(
+#     llm=llm, embed_model=embed_model
+# )
 
 # Load your documents
 documents = SimpleDirectoryReader('data').load_data()
 
 # Build the index
-index = VectorStoreIndex.from_documents(
-    documents=documents, service_context=service_context
-)
+# index = VectorStoreIndex.from_documents(
+#     documents=documents, service_context=service_context
+# )
 
 # query_engine = index.as_query_engine()
 # response = query_engine.query("Looking for a person of african descendant")
@@ -93,12 +101,12 @@ query_engine = index.as_query_engine(
     text_qa_template=text_qa_template, 
     refine_template=refine_template
 )
-response = query_engine.query("Looking for a person of african descendant")
+# response = query_engine.query("Looking for a person of african descendant")
 
-print(response)
-response = query_engine.query("Looking for a image related to music or art")
+# print(response)
+# response = query_engine.query("Looking for a image related to music or art")
 # response = query_engine.query("Looking for images with women in them")
 # response = query_engine.query("Looking fun images make sure to provide the image url ")
 # response = query_engine.query("Looking images for my sports blog. Do not mention the tags. Provide the image urls. These documents have urls at the tops followed by a list of tags torepresent the image")
-print(response)
-x=0
+# print(response)
+# x=0
